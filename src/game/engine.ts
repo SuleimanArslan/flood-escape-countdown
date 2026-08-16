@@ -395,7 +395,7 @@ export class Game {
     this.ripples = this.ripples.filter((r) => (r.t += dt) < 1.1);
 
     // flood
-    this.water += (this.level.waterRate + this.level.waterAccel * this.t) * dt * 10;
+    this.water += (this.level.waterRate + this.level.waterAccel * this.t) * dt;
     if (this.water >= WATER_MAX) this.finish(false, "The city was overwhelmed before you reached safety.");
 
     // damage
