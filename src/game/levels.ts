@@ -148,8 +148,9 @@ export function buildMap(level: LevelDef): Tile[] {
 
 export function reachable(tiles: Tile[], from: [number, number], to: [number, number]) {
   const seen = new Uint8Array(MAP_W * MAP_H);
-  const q: number[] = [from[1] * MAP_W + from[0]];
-  seen[q[0]] = 1;
+  const start = from[1] * MAP_W + from[0];
+  const q: number[] = [start];
+  seen[start] = 1;
   const target = to[1] * MAP_W + to[0];
   while (q.length) {
     const i = q.shift() as number;
