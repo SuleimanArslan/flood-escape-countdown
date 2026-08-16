@@ -145,3 +145,41 @@ export function buildMap(level: LevelDef): Tile[] {
   clear(MAP_W - 4, MAP_H - 4, "high");
   return tiles;
 }
+
+export function reachable(tiles: Tile[], from: [number, number], to: [number, number]) {
+  const seen = new Uint8Array(MAP_W * MAP_H);
+  const q: number[] = [from[1] * MAP_W + from[0]];
+  seen[q[0]] = 1;
+  const target = to[1] * MAP_W + to[0];
+  while (q.length) {
+    const i = q.shift()!;
+    if (i === target) return true;
+    const x = i % MAP_W;
+    const y = (i / MAP_W) | 0;
+    const nb = [
+      [x + 1, y],
+      [x - 1, y],
+      [x, y + 1],
+      [x, y - 1],
+    ];
+    for (const [nx, ny] of nb) {
+      if (nx < 0 || ny < 0 || nx >= MAP_W || ny >= MAP_H) continue;
+      const j = ny * MAP_W + nx;
+      if (seen[j] || tiles[j].solid) continue;
+      seen[j] = 1;
+      q.push(j);
+    }
+  }
+  return false;
+}
+
+export function ensureRoute(tiles: Tile[], from: [number, number], to: [number, number]) {
+  let guard = 400;
+  while (!reachable(tiles, from, to) && guard-- > 0) {
+    const i = tiles.findIndex((t) => t.kind === "debris");
+    if (i < 0) break;
+    tiles[i].kind = "road";
+    tiles[i].elev = elevFor("road");
+    tiles[i].solid = false;
+  }
+}
