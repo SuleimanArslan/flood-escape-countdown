@@ -1,24 +1,39 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { lazy, Suspense } from "react";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
+const FloodEscape = lazy(() => import("@/components/game/FloodEscape"));
+
+const title = "Flood Escape — Survive the Rising Water";
+const description =
+  "A tense browser survival game: navigate a flooding city, save survivors, gather supplies and reach evacuation before the water wins.";
+
 export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title },
+      { name: "description", content: description },
+      { property: "og:title", content: title },
+      { property: "og:description", content: description },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
 function Index() {
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
+    <main>
+      <h1 className="sr-only">Flood Escape — when the water rises, every decision matters</h1>
+      <Suspense
+        fallback={
+          <div className="flex h-[100dvh] items-center justify-center bg-background text-muted-foreground">
+            Loading Flood Escape…
+          </div>
+        }
+      >
+        <FloodEscape />
+      </Suspense>
+    </main>
   );
 }
