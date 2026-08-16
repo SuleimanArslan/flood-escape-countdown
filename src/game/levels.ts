@@ -156,7 +156,7 @@ export function reachable(tiles: Tile[], from: [number, number], to: [number, nu
     if (i === target) return true;
     const x = i % MAP_W;
     const y = (i / MAP_W) | 0;
-    const nb = [
+    const nb: Array<[number, number]> = [
       [x + 1, y],
       [x - 1, y],
       [x, y + 1],
@@ -165,7 +165,7 @@ export function reachable(tiles: Tile[], from: [number, number], to: [number, nu
     for (const [nx, ny] of nb) {
       if (nx < 0 || ny < 0 || nx >= MAP_W || ny >= MAP_H) continue;
       const j = ny * MAP_W + nx;
-      if (seen[j] || tiles[j].solid) continue;
+      if (seen[j] || tiles[j]!.solid) continue;
       seen[j] = 1;
       q.push(j);
     }
@@ -178,8 +178,9 @@ export function ensureRoute(tiles: Tile[], from: [number, number], to: [number, 
   while (!reachable(tiles, from, to) && guard-- > 0) {
     const i = tiles.findIndex((t) => t.kind === "debris");
     if (i < 0) break;
-    tiles[i].kind = "road";
-    tiles[i].elev = elevFor("road");
-    tiles[i].solid = false;
+    const t = tiles[i]!;
+    t.kind = "road";
+    t.elev = elevFor("road");
+    t.solid = false;
   }
 }
