@@ -32,8 +32,11 @@ function tileColor(t: Tile) {
   }
 }
 
-export function render(ctx: CanvasRenderingContext2D, g: Game, W: number, H: number) {
+export function render(ctx: CanvasRenderingContext2D, g: Game, CW: number, CH: number) {
   const t = g.t;
+  const zoom = Math.max(1.4, Math.min(2.2, CW / 900));
+  const W = CW / zoom;
+  const H = CH / zoom;
   // camera
   const shake = g.shake;
   const tx = Math.max(0, Math.min(MAP_W * TILE - W, g.px - W / 2));
@@ -44,8 +47,9 @@ export function render(ctx: CanvasRenderingContext2D, g: Game, W: number, H: num
   const oy = -g.camY + (Math.random() - 0.5) * shake;
 
   ctx.fillStyle = "#0b0e12";
-  ctx.fillRect(0, 0, W, H);
+  ctx.fillRect(0, 0, CW, CH);
   ctx.save();
+  ctx.scale(zoom, zoom);
   ctx.translate(Math.round(ox), Math.round(oy));
 
   const x0 = Math.max(0, Math.floor(g.camX / TILE) - 1);
@@ -202,8 +206,8 @@ export function render(ctx: CanvasRenderingContext2D, g: Game, W: number, H: num
   ctx.strokeStyle = "rgba(160,200,220,0.18)";
   ctx.lineWidth = 1;
   for (let i = 0; i < 70; i++) {
-    const rx = (i * 137.5 + t * 260) % W;
-    const ry = (i * 71.3 + t * 900) % H;
+    const rx = (i * 137.5 + t * 260) % CW;
+    const ry = (i * 71.3 + t * 900) % CH;
     ctx.beginPath();
     ctx.moveTo(rx, ry);
     ctx.lineTo(rx - 3, ry + 12);
@@ -211,18 +215,25 @@ export function render(ctx: CanvasRenderingContext2D, g: Game, W: number, H: num
   }
 
   // vignette + danger tint
-  const vg = ctx.createRadialGradient(W / 2, H / 2, Math.min(W, H) * 0.35, W / 2, H / 2, Math.max(W, H) * 0.72);
+  const vg = ctx.createRadialGradient(
+    CW / 2,
+    CH / 2,
+    Math.min(CW, CH) * 0.35,
+    CW / 2,
+    CH / 2,
+    Math.max(CW, CH) * 0.72,
+  );
   vg.addColorStop(0, "rgba(0,0,0,0)");
   vg.addColorStop(1, "rgba(0,0,0,0.72)");
   ctx.fillStyle = vg;
-  ctx.fillRect(0, 0, W, H);
+  ctx.fillRect(0, 0, CW, CH);
   const danger = Math.max(0, Math.min(1, g.depthAt(g.px, g.py) / 1.1));
   if (danger > 0.6) {
     ctx.fillStyle = `rgba(190,40,40,${(danger - 0.6) * 0.5})`;
-    ctx.fillRect(0, 0, W, H);
+    ctx.fillRect(0, 0, CW, CH);
   }
 
-  drawMinimap(ctx, g, W);
+  drawMinimap(ctx, g, CW);
 }
 
 function drawWater(
