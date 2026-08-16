@@ -63,25 +63,25 @@
 
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.129 0.042 264.695);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.129 0.042 264.695);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.129 0.042 264.695);
-  --primary: oklch(0.208 0.042 265.755);
-  --primary-foreground: oklch(0.984 0.003 247.858);
-  --secondary: oklch(0.968 0.007 247.896);
-  --secondary-foreground: oklch(0.208 0.042 265.755);
-  --muted: oklch(0.968 0.007 247.896);
-  --muted-foreground: oklch(0.554 0.046 257.417);
-  --accent: oklch(0.968 0.007 247.896);
-  --accent-foreground: oklch(0.208 0.042 265.755);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(0.929 0.013 255.508);
-  --input: oklch(0.929 0.013 255.508);
-  --ring: oklch(0.704 0.04 256.788);
+  --background: oklch(0.16 0.017 240);
+  --foreground: oklch(0.95 0.008 230);
+  --card: oklch(0.21 0.021 240);
+  --card-foreground: oklch(0.95 0.008 230);
+  --popover: oklch(0.21 0.021 240);
+  --popover-foreground: oklch(0.95 0.008 230);
+  --primary: oklch(0.62 0.098 213);
+  --primary-foreground: oklch(0.14 0.02 240);
+  --secondary: oklch(0.28 0.024 238);
+  --secondary-foreground: oklch(0.95 0.008 230);
+  --muted: oklch(0.29 0.018 240);
+  --muted-foreground: oklch(0.7 0.017 235);
+  --accent: oklch(0.73 0.16 55);
+  --accent-foreground: oklch(0.16 0.02 240);
+  --destructive: oklch(0.6 0.21 26);
+  --destructive-foreground: oklch(0.97 0.008 230);
+  --border: oklch(0.33 0.024 236);
+  --input: oklch(0.33 0.024 236);
+  --ring: oklch(0.62 0.098 213);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -140,5 +140,35 @@
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
+    font-family: "Barlow", system-ui, sans-serif;
+    overscroll-behavior: none;
   }
+}
+
+@theme inline {
+  --font-display: "Oswald", system-ui, sans-serif;
+}
+
+@keyframes waveDrift {
+  0% {
+    transform: translateX(-52%) rotate(0deg);
+  }
+  100% {
+    transform: translateX(-48%) rotate(360deg);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.8s ease-out both;
 }
