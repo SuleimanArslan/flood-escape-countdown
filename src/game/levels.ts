@@ -152,7 +152,7 @@ export function reachable(tiles: Tile[], from: [number, number], to: [number, nu
   seen[q[0]] = 1;
   const target = to[1] * MAP_W + to[0];
   while (q.length) {
-    const i = q.shift()!;
+    const i = q.shift() as number;
     if (i === target) return true;
     const x = i % MAP_W;
     const y = (i / MAP_W) | 0;
