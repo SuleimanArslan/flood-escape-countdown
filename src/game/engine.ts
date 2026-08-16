@@ -7,6 +7,7 @@ import {
   buildMap,
   ensureRoute,
   mulberry32,
+  reachable,
   type LevelDef,
   type Tile,
 } from "./levels";
@@ -152,7 +153,7 @@ export class Game {
     for (let y = 2; y < MAP_H - 2; y++)
       for (let x = 2; x < MAP_W - 2; x++) {
         const t = this.tileAt(x, y);
-        if (t && !t.solid) free.push([x, y]);
+        if (t && !t.solid && reachable(this.tiles, [2, 2], [x, y])) free.push([x, y]);
       }
     const pick = () => {
       for (let i = 0; i < 60; i++) {
